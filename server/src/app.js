@@ -3,6 +3,7 @@ import cors from "cors";
 import logger from "../logger.js";
 import morgan from "morgan";
 import healthCheckRoute from "./routes/healthCheck.route.js";
+import taskRoute from "./routes/task.route.js";
 
 const app = express();
 const morganFormat = ":method :url :status :response-time ms";
@@ -39,6 +40,7 @@ app.use(
 
 // Routes
 app.use("/api/v1/healthCheck",healthCheckRoute)
+app.use("/api/v1/tasks",taskRoute)
 
 
 
