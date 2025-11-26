@@ -52,8 +52,38 @@ const updateTask = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, updateTask, "Task updated successfully!"));
   } catch (error) {
-    throw new ApiError(400, error.message);
+    throw new ApiError(400, "Error while upgating the task", error.message);
   }
 });
 
-export { addTask, getAllTasks, updateTask };
+const deleteTask = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const task = await Task.findById(id);
+    if (!task) {
+      throw new ApiError(400, "Task not found");
+    }
+    const deletedTask = await Task.findByIdAndDelete(id);
+    console.log(`Task deleted: ${deletedTask}`);
+    return res
+      .status(200)
+      .json(new ApiResponse(200, deletedTask, "Task Deleted successfully"));
+  } catch (error) {
+    throw new ApiError(400, "Error while deleting", error.message);
+  }
+});
+
+const deleteAllTasks = asyncHandler(async (req, res) => {
+  try {
+    const deletedTasks = await Task.deleteMany({});
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, deletedTasks, "All Tasks Deleted successfully")
+      );
+  } catch (error) {
+    throw new ApiError(400, "Error while deleting", error.message, );
+  }
+});
+
+export { addTask, getAllTasks, updateTask, deleteTask, deleteAllTasks };
