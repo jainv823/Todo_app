@@ -21,4 +21,12 @@ const addTask = asyncHandler(async (req, res) => {
   }
 });
 
-export { addTask };
+const getAllTasks = asyncHandler(async(req,res) => {
+    const tasks = await Task.find();
+    if (!tasks) {
+      throw new ApiError(400, "Tasks not found");
+    }
+    return res.status(200).json(new ApiResponse(200, tasks));
+})
+
+export { addTask,getAllTasks };
